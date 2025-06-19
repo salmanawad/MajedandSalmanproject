@@ -1,4 +1,7 @@
 Flask
+
 requests
+
 validators
+
 beautifulsoup4
