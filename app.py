@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template
 import requests, validators
 from bs4 import BeautifulSoup
 
@@ -25,32 +25,24 @@ def is_tracking_url(url):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    result = ""
+    result = []
+    final_url = ""
+    status = ""
     if request.method == "POST":
         url = request.form.get("url")
         if not is_valid_url(url):
-            result = "<p style='color:red'>❌ الرابط غير صالح</p>"
+            status = "❌ الرابط غير صالح"
         else:
             final_url, html = trace_redirects(url)
             if not final_url:
-                result = "<p style='color:orange'>⚠️ تعذر تتبع الرابط</p>"
+                status = "⚠️ تعذر تتبع الرابط"
             else:
                 status = "⚠️ مشبوه" if is_tracking_url(final_url) else "✅ آمن"
-                result = f"<p><b>URLTrap كشف:</b> {status}</p><p>الرابط النهائي: {final_url}</p><hr><p><b>روابط داخل الصفحة:</b></p>"
-                for link in extract_links(html or ""):
+                links = extract_links(html or "")
+                for link in links:
                     label = "⚠️" if is_tracking_url(link) else "✅"
-                    result += f"<p>{label} {link}</p>"
-    return render_template_string(f"""
-    <html dir="rtl" style="background:#222;color:#eee;font-family:tahoma;">
-      <head><title>URLTrap</title></head>
-      <body><h2>🔍 URLTrap</h2>
-        <form method="post">
-          <input name="url" placeholder="أدخل الرابط" style="width:300px;padding:5px;">
-          <button type="submit" style="padding:5px;">فحص</button>
-        </form><div style="margin-top:20px;">{result}</div>
-      </body>
-    </html>
-    """)
+                    result.append((label, link))
+    return render_template("index.html", result=result, final_url=final_url, status=status)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
