@@ -1,7 +1,5 @@
 Flask
-
 requests
-
 validators
-
 beautifulsoup4
+gunicorn
