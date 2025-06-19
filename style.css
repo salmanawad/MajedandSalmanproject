@@ -1,1 +1,31 @@
-background-image: url("/static/bg.jpg");
+/* خلفية الموقع */
+body {
+  background-image: url("/static/bg.jpg"); /* تأكد أن الصورة اسمها bg.jpg */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #ffffff;
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+  backdrop-filter: brightness(0.6);
+  margin: 0;
+  padding: 0;
+}
+
+/* الكروت وصناديق الإدخال */
+.card {
+  background-color: rgba(0, 0, 0, 0.65);
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-control,
+.btn {
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+/* الروابط المكتشفة */
+.list-group-item {
+  background: t
